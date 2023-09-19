@@ -44,6 +44,18 @@ export const logout = catchAsync(async (req, res, next) => {
   });
 });
 
+// Get all Users
+export const allUsers = catchAsync(async (req, res, next) => {
+  const { usr } = req.query;
+  const filter = {};
+  if (usr) filter._id = usr;
+  const users = await User.find(filter).lean().sort({ updatedAt: -1 });
+  res.status(200).json({
+      status: 'success',
+      data: users,
+  });
+});
+
 // Get User Detail
 export const loadUser = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id);
